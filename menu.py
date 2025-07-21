@@ -1,5 +1,5 @@
-from usuarios import crear_usuario, listar_usuarios, listar_gastos_usuarios, agregar_gasto_usuario, limpiar_archivo, archivar_y_resetear_usuarios
-from gastos_comunes import agregar_gastos_comunes, limpiar_archivo_gastos_comunes, listar_gastos_comunes, archivar_y_resetear_gastos_comunes
+from usuarios import imprimir_usuarios, crear_usuario, listar_usuarios, listar_gastos_usuarios, agregar_gasto_usuario, limpiar_archivo, archivar_y_resetear_usuarios
+from gastos_comunes import imprimir_gasto_comun, agregar_gastos_comunes, limpiar_archivo_gastos_comunes, listar_gastos_comunes, archivar_y_resetear_gastos_comunes
 from datetime import date, datetime
 import os
 import json
@@ -71,6 +71,33 @@ def backup(ruta):
         return None
     return True
 
+def mostrar_historial(ruta, anio, mes):
+    print("Ingresando al historial...\n")
+    ruta_historial_gastos_comunes = os.path.join(ruta, "historial_gastos_comunes")
+    ruta_historial_usuarios = os.path.join(ruta, "historial_usuarios")
+    mes_str = f"{anio}-{mes:02d}"
+
+    ok = False
+
+    for archivo in os.listdir(ruta_historial_gastos_comunes):
+        if archivo.endswith("_gastos_comunes.json"):
+            if archivo.startswith(mes_str):
+                ruta_archivo = os.path.join(ruta_historial_gastos_comunes, archivo)
+                print(f"El historial de gastos comunes del mes {mes} del año {anio} es:\n")
+                ok = imprimir_gasto_comun(ruta_archivo)
+    if not ok:
+        print("No se encontro dicho historial de gastos comunes")
+    ok = False
+
+    for archivo in os.listdir(ruta_historial_usuarios):
+        if archivo.endswith("_usuarios.json"):
+            if archivo.startswith(mes_str):
+                ruta_archivo = os.path.join(ruta_historial_usuarios, archivo)
+                print(f"El historial de usuarios del mes {mes} del año {anio}")
+                ok = imprimir_usuarios(ruta_archivo)
+    if not ok:
+        print("No se encontro dicho historial de usuarios")
+
 def mostrar_menu(ruta):
     chequear_necesidad_backup(ruta)
     while True:
@@ -80,6 +107,7 @@ def mostrar_menu(ruta):
         print("3. Agregar Usuario")
         print("4. Listar Gastos Comunes")
         print("5. Listar Gastos de Usuarios")
+        print("6. Mostrar historial")
         print("10. Salir")
         op = int(input("Ingrese numero de la operacion que desea realizar: "))
         if op == 1:
@@ -118,6 +146,11 @@ def mostrar_menu(ruta):
         elif op == 5:
             listar_gastos_usuarios()
 
+        elif op == 6:
+            print("Ingrese los datos del historial que busca: ")
+            anio = int(input("Año: "))
+            mes = int(input("Mes: "))
+            mostrar_historial(ruta, anio, mes)
         elif op == 10:
             print("Saliendo...")
             break

@@ -1,0 +1,13 @@
+[
+    {
+        "nombre": "nico",
+        "gastos": 355.0,
+        "historial": [
+            {
+                "fecha": "2025-07-21",
+                "descripcion": "pan",
+                "monto": 355.0
+            }
+        ]
+    }
+]

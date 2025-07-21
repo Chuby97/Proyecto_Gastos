@@ -76,6 +76,19 @@ def agregar_gasto_usuario(nombre, contra, monto, descripcion):
     print("Usuario no encontrado")
     return False
 
+def imprimir_usuarios(ruta):
+    with open(ruta, "r") as f:
+        usuarios = json.load(f)
+    for u in usuarios:
+        print(f"Usuario: {u['nombre']}  Gastos: {u['gastos']}")
+        if "historial" in u and u['historial']:
+            print("Hisorial de gastos: ")
+            for g in u['historial']:
+                print(f"-   {g['fecha']} | {g['descripcion']} | {g['monto']}")
+        else:
+            print("Sin detalle de los gastos registrados")
+    return True
+
 def archivar_y_resetear_usuarios(ruta_historial):
     usuarios = cargar_usuarios()
     historial_mes = []

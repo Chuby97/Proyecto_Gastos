@@ -38,6 +38,14 @@ def listar_gastos_comunes():
     for h in gastos['historial']:
         print(f"-   {h['fecha']} | {h['descripcion']} | {h['monto']}")
 
+def imprimir_gasto_comun(ruta):
+    with open(ruta, "r") as f:
+        datos = json.load(f)
+    print(f"El historial de este mes fue: ${datos[0]['total']}")
+    for h in datos[0]['historial']:
+        print(f"-   {h['fecha']} | {h['descripcion']} | {h['monto']}")
+    return True
+
 def archivar_y_resetear_gastos_comunes(ruta_historial):
     gastos = cargar_gastos_comunes()
     historial_mes = []
